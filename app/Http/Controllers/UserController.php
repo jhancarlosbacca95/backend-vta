@@ -14,7 +14,7 @@ class UserController extends Controller
             'name'=>'required|alpha',
             'surname'=>'required|alpha',
             'email' => 'required|unique:users|email',
-            'password'=> '<PASSWORD>'
+            'password'=> 'sangalanga'
             
         ]);
     }
