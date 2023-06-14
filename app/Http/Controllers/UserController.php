@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\JwtAuth;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 
@@ -70,5 +71,46 @@ class UserController extends Controller
 
         return response()->json($data,$data['code']);
     }
-    
+
+    public function login(Request $request){
+
+        $jwtAuth = new JwtAuth();
+
+        $json = $request->input('json',null);
+        $params= json_decode($json);
+        $params_array = json_decode($json,true);
+
+        $validate = \Validator::make($params_array,[
+            'email'=>'required|email',
+            'password'=> 'required'
+        ]);
+
+        if ($validate->fails()) {
+            //validacion ha fallado
+            $signup = array(
+                'status' =>'error',
+                'code'=>404,
+                'message'=>'error con los datos ingresados',
+                'errors'=>$validate->errors()
+            );
+        }else{
+            //cifrar contraseña
+            $pwd = hash('sha256',$params->password);
+
+            //devolver el token
+            $signup = $jwtAuth->signup($params->email,$pwd);
+
+            if(!empty($params->gettoken)){
+                $signup=$jwtAuth->signup($params->email,$pwd, true);
+            }
+        }
+        return response()->json($signup , 200);
+    }
+
+    public function update(Request $request){
+
+        //comprobar si el usuario esta identificado
+
+    }
+
 }
