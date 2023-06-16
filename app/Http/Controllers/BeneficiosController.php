@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class BeneficiosController extends Controller
 {
+    public function __construct(){
+        $this->middleware('api.auth');
+    }
     public function index(){
     $beneficios = Beneficio::all()->load('tipoBeneficio.categoriaBeneficio');
 

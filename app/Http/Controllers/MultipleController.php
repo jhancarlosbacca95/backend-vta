@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 
 class MultipleController extends Controller
 {
+    public function __construct(){
+        $this->middleware('api.auth');
+    }
     public function municipios(){
         $municipios = Municipio::all()->load('departamento');
 

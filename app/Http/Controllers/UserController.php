@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('api.auth',['except'=>['register','login']]);
+    }
     
     public function register(Request $request)
     {
@@ -153,8 +157,35 @@ class UserController extends Controller
         ];
       }
       return response()->json($data, $data['code']);
+    }
+    
+    public function upload(Request $request){
+        //Recoger los datos de la peticion 
+        $image = $request->file('file0');
+        $validate = \Validator::make($request->all(),[
+            'file0'=>'required|mimes:jpg,jpeg,png,gif'
+        ]);
 
+        if(!$image || $validate->fails()){
+            $data=[
+                'code'=>400,
+                'status'=>'error',
+                'message'=>'Error al subir imagen'
+            ];
+        }else{
+            //Se concatena la fecha con el nombre de la imagen
+            $image_name = time().$image->getClientOriginalName();
 
+            //lugar donde se guardara la imagen
+            \Storage::disk('users')->put($image_name,\File::get($image));
+        
+            $data=[
+                'code'=>200,
+                'status'=>'success',
+                'image'=>$image_name
+            ];
+        }
+        return response()->json($data,$data['code']);
     }
 
 }

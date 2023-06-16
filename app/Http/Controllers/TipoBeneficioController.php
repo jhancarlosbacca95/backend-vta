@@ -8,8 +8,12 @@ use Illuminate\Http\Request;
 
 class TipoBeneficioController extends Controller
 {
+    public function __construct(){
+        $this->middleware('api.auth');
+    }
     public function index()
     {
+        
         $tipoBene = TipoBeneficio::all()->load('categoriaBeneficio');
         if ($tipoBene->isEmpty()) {
             $data = [

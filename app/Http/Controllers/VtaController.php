@@ -11,9 +11,14 @@ use Dotenv\Exception\ValidationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\JwtAuth;
+use App\Http\Middleware;
 
 class VtaController extends Controller
 {
+    public function __construct(){
+        $this->middleware('api.auth', ['except' => ['index']]);
+    }
     public function index()
     {
         //Se realiza el select de todos los propietarios con la informacion relacionada a el
