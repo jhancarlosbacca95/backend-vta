@@ -10,6 +10,6 @@ class Pdf extends Model
     protected $table = 'pdfs';
 
     public function propietario(){
-        return $this->belongsTo(Propietario::class,'IdProp');
+        return $this->belongsTo(Propietario::class,'propietario_id');
     }
 }

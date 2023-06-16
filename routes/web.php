@@ -17,12 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+//rutas de las categorias y tipos de beneficios
 Route::resource('/api/categorias','App\Http\Controllers\CategoriaBeneficioController');
 Route::resource('/api/tipoBeneficio','App\Http\Controllers\TipoBeneficioController');
 
+//rutas de los vta(y todos sus componentes)
 Route::resource('/api/vta','App\Http\Controllers\VtaController');
 
+//Rutas de los beneficios(asignaciones etc)
 Route::resource('/api/beneficios','App\Http\Controllers\BeneficiosController');
 
 //ruta de los usuarios
@@ -30,6 +32,11 @@ Route::post('api/registro','App\Http\Controllers\UserController@register');
 Route::post('api/login','App\Http\Controllers\UserController@login');
 Route::put('/api/user/update', 'App\Http\Controllers\UserController@update');
 Route::post('/api/user/upload','App\Http\Controllers\UserController@upload');
+Route::get('/api/user/avatar/{filename}','App\Http\Controllers\UserController@getImage');
+
+//Ruta de los pdfs
+Route::post('/api/pdf/upload','App\Http\Controllers\PdfController@upload');
+Route::get('/api/pdf/getPdf/{filename}','App\Http\Controllers\PdfController@getPdf');
 
 //rutas para el controllador multiple
 Route::get('/api/municipios','App\Http\Controllers\MultipleController@municipios');
