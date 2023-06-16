@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    
+    public function register(Request $request)
     {
         $json = $request->input('json', null);
         $params_array = json_decode($json, true);
@@ -20,8 +21,8 @@ class UserController extends Controller
 
             //se validan los datos 
             $validate = \Validator::make($params_array, [
-                'name' => 'required|alpha',
-                'surname' => 'required|alpha',
+                'name' => 'required',
+                'surname' => 'required',
                 'email' => 'required|unique:users|email',
                 'password' => 'required'
             ]);
@@ -108,8 +109,51 @@ class UserController extends Controller
     }
 
     public function update(Request $request){
-
         //comprobar si el usuario esta identificado
+      $token = $request->header('Authorization');
+      $jwtAuth = new JwtAuth();
+      $checkToken = $jwtAuth->checkToken($token);
+
+      //recoger los datos por post
+      $json = $request->input('json',null);
+      $params_array = json_decode($json,true);
+      if($checkToken && !empty($params_array)){
+        //sacar el usuario identificado
+        $user = $jwtAuth->checkToken($token,true);
+
+        $validate = \Validator::make($params_array,[
+            'name'=>'required',
+            'surname'=>'required',
+            'email'=>'required|email|unique:users' .$user->sub
+        ]);
+
+        //Quitar los campos que no se actualizaran
+        unset($params_array['id']);
+        unset($params_array['role']);
+        unset($params_array['password']);
+        unset($params_array['created_at']);
+        unset($params_array['remember_token']);
+
+        //Actualizar el usuario en la base de datos 
+        $user_update = User::where('id',$user->sub)->update($params_array);
+
+        //Devolver array con los resultados
+        $data=[
+            'code'=>200,
+            'status'=>'success',
+            'user'=>$user,
+            'changes'=>$params_array
+        ];
+
+      }else{
+        $data=[
+            'code'=>400,
+            'status'=>'error',
+            'message'=>'el usuario no esta identificado'
+        ];
+      }
+      return response()->json($data, $data['code']);
+
 
     }
 

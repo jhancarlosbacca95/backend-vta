@@ -25,6 +25,10 @@ Route::resource('/api/vta','App\Http\Controllers\VtaController');
 
 Route::resource('/api/beneficios','App\Http\Controllers\BeneficiosController');
 
+//ruta de los usuarios
+Route::post('api/registro','App\Http\Controllers\UserController@register');
+Route::post('api/login','App\Http\Controllers\UserController@login');
+Route::put('/api/user/update', 'App\Http\Controllers\UserController@update');
 
 //rutas para el controllador multiple
 Route::get('/api/municipios','App\Http\Controllers\MultipleController@municipios');
