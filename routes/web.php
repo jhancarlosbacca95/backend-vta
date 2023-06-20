@@ -38,6 +38,9 @@ Route::get('/api/user/avatar/{filename}','App\Http\Controllers\UserController@ge
 Route::post('/api/pdf/upload','App\Http\Controllers\PdfController@upload');
 Route::get('/api/pdf/getPdf/{filename}','App\Http\Controllers\PdfController@getPdf');
 Route::get('/api/pdf/generate/{id}','App\Http\Controllers\PdfController@generate');
+Route::delete('/api/pdf/destroy/{id}','App\Http\Controllers\PdfController@destroy');
+
+
 
 //rutas para el controllador multiple
 Route::get('/api/municipios','App\Http\Controllers\MultipleController@municipios');
