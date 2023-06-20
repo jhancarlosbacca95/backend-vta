@@ -20,7 +20,7 @@ class Beneficio extends Model
         'descripcion'
     ];
 
-    public function  tipoBeneficio(){
+    public function tipoBeneficio(){
         return $this->belongsTo(TipoBeneficio::class,'tipoBeneficio_id');
     }
 
