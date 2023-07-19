@@ -343,6 +343,7 @@ class VtaController extends Controller
     public function validaciones()
     {
         $propietarioRules = [
+            'codEncuesta'=>'required|unique:propietarios',
             'tipo_identificacion_id' => 'required',
             'id' => 'required|numeric',
             'primerNombre' => 'required',

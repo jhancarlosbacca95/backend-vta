@@ -11,6 +11,7 @@ class Propietario extends Model
     public $timestamps = false;
 
     protected $fillable=[
+        'codEncuesta',
         'tipo_identificacion_id',
         'id',
         'primerNombre',
